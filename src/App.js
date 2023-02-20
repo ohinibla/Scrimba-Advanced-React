@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./styles.css";
 
 export default function App() {
   const STARTING_TIME = 5;
+
   const [text, setText] = useState("");
   const [timeRemaining, setTimeRemaining] = useState(STARTING_TIME);
   const [isTimeRunning, setIsTimeRunning] = useState(false);
   const [wordCount, setWordCount] = useState(0);
+  const textAreaRef = useRef(null);
 
   function handleChange(event) {
     setText(event.target.value);
@@ -22,6 +24,8 @@ export default function App() {
     setTimeRemaining(STARTING_TIME);
     setWordCount(0);
     setText("");
+    textAreaRef.current.disabled = false;
+    textAreaRef.current.focus();
   }
 
   function endGame() {
@@ -39,8 +43,6 @@ export default function App() {
     }
   }, [timeRemaining, isTimeRunning]);
 
-  console.log(isTimeRunning);
-
   return (
     <main>
       <h1>How fast do you type?</h1>
@@ -50,6 +52,7 @@ export default function App() {
         id="text"
         name="text"
         value={text}
+        ref={textAreaRef}
         disabled={!isTimeRunning}
       />
       <h4>Time remaining: {timeRemaining}</h4>
